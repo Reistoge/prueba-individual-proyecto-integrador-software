@@ -1,8 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { RetencionService } from './retencion.service';
-import { CreateRetencionDto } from './dto/create-retencion.dto';
-import { UpdateRetencionDto } from './dto/update-retencion.dto';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { RetencionResponseDto } from './dto/retencion-response.dto';
 import { CarreraResponseDto } from './dto/carrera-response.dto';
 
@@ -10,12 +8,22 @@ import { CarreraResponseDto } from './dto/carrera-response.dto';
 export class RetencionController {
   constructor(private readonly retencionService: RetencionService) { }
 
-
   @Get('resumen')
-  @ApiOperation({ summary: " obtiene retención por año (todas las carreras)." }) @ApiResponse({ type: RetencionResponseDto, isArray: true })
-  getResumen() {
-    return this.retencionService.obtenerResumen();
+  @ApiOperation({ summary: "Obtiene retención global. Si se especifica 'filename', lee del JSON local." })
+  @ApiResponse({ type: RetencionResponseDto, isArray: true })
+  @ApiQuery({ name: 'from', required: false, type: Number })
+  @ApiQuery({ name: 'to', required: false, type: Number })
+  @ApiQuery({ name: 'catalogo', required: false, type: String })
+  @ApiQuery({ name: 'filename', required: false, type: String, description: 'Nombre del archivo en seed/ (ej: output.json)' })
+  getResumen(
+    @Query('from') from?: number,
+    @Query('to') to?: number,
+    @Query('catalogo') catalogo?: string,
+    @Query('filename') filename?: string // <--- Nuevo parámetro
+  ) {
+    return this.retencionService.obtenerResumen({ from, to, catalogo }, filename);
   }
+
   @Get('carreras')
   @ApiOperation({ summary: "Listado de carreras disponibles" })
   @ApiResponse({ type: CarreraResponseDto, isArray: true })
@@ -24,13 +32,19 @@ export class RetencionController {
   }
 
   @Get('por-carrera')
-  @ApiOperation({ summary: "Retención por carrera y año cohorte" })
+  @ApiOperation({ summary: "Retención por carrera. Si se especifica 'filename', lee del JSON local." })
   @ApiResponse({ type: RetencionResponseDto, isArray: true })
-  getCarreraByPrograma(@Query('cod_programa') codPrograma: string) {
-    return this.retencionService.obtenerPorCarrera(codPrograma);
+  @ApiQuery({ name: 'from', required: false, type: Number })
+  @ApiQuery({ name: 'to', required: false, type: Number })
+  @ApiQuery({ name: 'catalogo', required: false, type: String })
+  @ApiQuery({ name: 'filename', required: false, type: String })
+  getCarreraByPrograma(
+    @Query('cod_programa') codPrograma: string,
+    @Query('from') from?: number,
+    @Query('to') to?: number,
+    @Query('catalogo') catalogo?: string,
+    @Query('filename') filename?: string // <--- Nuevo parámetro
+  ) {
+    return this.retencionService.obtenerPorCarrera(codPrograma, { from, to, catalogo }, filename);
   }
-
-
-
-
 }

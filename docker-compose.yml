@@ -1,0 +1,46 @@
+services:
+    
+    mongodb:
+        image: mongodb/mongodb-community-server:latest
+        container_name: mongodb
+        restart: unless-stopped
+        ports:
+            - "27017:27017"
+        volumes:
+            - mongodb:/data/db 
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: reist
+            MONGO_INITDB_ROOT_PASSWORD: password1234
+    # backend:
+    #     build: ./backend
+    #     container_name: backend
+    #     restart: unless-stopped
+    #     ports:
+    #         - "5000:5000"
+    #     env_file:
+    #         - ./backend/.env
+    #     depends_on:
+    #         - mongodb
+
+    # frontend:
+    #     build:
+    #         context: ./frontend
+    #         dockerfile: Dockerfile
+    #     container_name: frontend
+    #     ports:
+    #         - "3000:3000"
+    #     restart: unless-stopped
+    #     env_file:
+    #         - ./frontend/.env
+    #     depends_on:
+    #         - backend
+    #     networks:
+    #         - app-network
+volumes:
+    mongodb:
+
+# docker-compose down --volumes --rmi all
+ 
+networks:
+  app-network:
+    driver: bridge

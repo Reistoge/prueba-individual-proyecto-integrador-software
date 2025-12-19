@@ -1,22 +1,24 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsArray, IsNumber, IsString, ValidateNested } from "class-validator";
+import { IsNumber, IsString } from "class-validator";
 
-
-export class RetencionResponseDto{
-    @ApiProperty({description: "year"})
+export class RetencionResponseDto {
+    @ApiProperty({ description: "Año cohorte" })
     @IsNumber()
     anio_cohorte: number;
-    
-    @ApiProperty({description: "cod_programa, nombre_estandar cuando aplique"})
-    @IsString()
-    carrera:string;
-    
-    @ApiProperty()
-    @IsString()
-    matriculados_primera_vez: string;
-    
-    @ApiProperty()
-    @IsString()
-    retenidos_anio_siguiente:string;
 
+    @ApiProperty({ description: "cod_programa o 'global'" })
+    @IsString()
+    carrera: string;
+
+    @ApiProperty()
+    @IsNumber()
+    matriculados_primera_vez: number;
+
+    @ApiProperty()
+    @IsNumber()
+    retenidos_anio_siguiente: number;
+
+    @ApiProperty()
+    @IsNumber()
+    tasa_retencion: number;
 }

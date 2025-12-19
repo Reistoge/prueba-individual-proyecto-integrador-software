@@ -7,27 +7,49 @@ import { StudentAcademicStatus } from './entities/student-academic-status.schema
 
 @Controller('student')
 export class StudentController {
-  constructor(private readonly studentService: StudentService) {}
+  constructor(private readonly studentService: StudentService) { }
 
   @Post()
-  @ApiOperation({summary: "Lee el archivo .json (como fuente de datos)."}) @ApiBody({type: CreateStudentDto, isArray:true}) @ApiResponse({ status: 201 })
+  @ApiOperation({ summary: "Lee el archivo .json (como fuente de datos)." }) @ApiBody({ type: CreateStudentDto, isArray: true }) @ApiResponse({ status: 201 })
   create(@Body() createStudentDto: CreateStudentDto[]) {
     return this.studentService.create(createStudentDto);
   }
-
-  @Get()
-  async findAll() : Promise<StudentAcademicStatus[]> {
+  @Post('seed/:filename')
+  @ApiOperation({ summary: "Hace un seed de la base de datos acorde a los archivos dentro de la carpeta database/seed" })
+  async seedFromFile(@Param('filename') filename: string) {
+    return await this.studentService.seedFromFile(filename);
+  }
+  @Get('filenames')
+  @ApiOperation({ summary: "Obtiene los nombres de los archivos disponibles." })
+  async getFilenames() {
+    return await this.studentService.getFilenames();
+  }
+  @Get(':rut')
+  async find(@Param('rut') rut: string): Promise<StudentAcademicStatus[]> {
+    return await this.studentService.findOne(rut);
+  }
+  @Get() @ApiOperation({ summary: "Obtiene todos los registros." })
+  async findAll(): Promise<StudentAcademicStatus[]> {
     return await this.studentService.findAll();
   }
 
-  @Get(':rut')
-  async find(@Param('rut') rut: string) :Promise<StudentAcademicStatus[]>{
-    return await this.studentService.findOne(rut);
+
+  @Delete('all')
+  @ApiOperation({ summary: "Elimina todos los registros de la base de datos" })
+  async removeAll() {
+    return await this.studentService.removeAll();
   }
 
- 
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return await this.studentService.remove(+id);
+  @Delete(':rut')
+  async remove(@Param('rut') rut: string) {
+    return await this.studentService.remove(rut);
   }
+
+
+
+
+
+
+
+
 }

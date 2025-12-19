@@ -1,12 +1,14 @@
 import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateStudentDto {
-    @ApiProperty()    
+    @ApiProperty()
     rut: string;
-    @ApiProperty() 
+    @ApiProperty()
     nombre: string;
     @ApiProperty()
     year_admision: number;
+    @ApiProperty()
+    cod_programa: string;
     @ApiProperty()
     nombre_estandar: string;
     @ApiProperty()

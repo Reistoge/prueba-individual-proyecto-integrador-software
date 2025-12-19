@@ -84,6 +84,7 @@ function buildHistoryForStudent(retentionRate: number): CreateStudentDto[] {
       });
     }
   } else {
+    // Chance
     // Student did NOT return for year 2 (dropout/not retained)
     // Optionally add a non-matriculated record or just omit year 2 entirely
     const addDropoutRecord = Math.random() < 0.3; // 30% chance to explicitly record dropout

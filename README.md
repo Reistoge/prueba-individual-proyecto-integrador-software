@@ -24,7 +24,7 @@ De acuerdo a los requerimientos especificados por el profesor, la Retencion Año
 
 El backend esta construido siguiendo principios de separacion de capas para garantizar la mantenibilidad y escalabilidad:
 
-- **Capa de Acceso a Datos (Repository)**: Encargada de la persistencia (MongoDB) o lectura de archivos (File System).
+- **Capa de Acceso a Datos (Repository)**: Encargada de la persistencia (MongoDB) o lectura de archivos.
 - **Capa de Negocio (Service)**: Contiene la logica pura de calculo de cohortes y validacion de estados de retencion, independiente de la fuente de datos.
 - **Capa de API (Controller)**: Expone los endpoints REST y gestiona los filtros y parámetros de consulta.
 
@@ -36,28 +36,28 @@ El backend esta construido siguiendo principios de separacion de capas para gara
 
 ## Instrucciones de Ejecucion
 
-1.  **Iniciar Base de Datos**: Utilice Docker para levantar la instancia de MongoDB necesaria.
+1.  **Iniciar Base de Datos**
 
     ```bash
     docker-compose up -d
     ```
 
-2.  **Instalar Dependencias**: Acceda al directorio del backend e instale los modulos necesarios.
+2.  **Instalar Dependencias**
 
     ```bash
     cd backend
     npm install
     ```
 
-3.  **Configuracion de Datos (Seeding)**: Asegurese de que los archivos de datos (ej. `output.json`) se encuentren en el directorio `backend/database/seed/` para poder cargarlos o leerlos directamente.
+3.  **IMPORTANTE:** Para la configuracion de Datos (Seeding) los archivos de datos (ej. `output.json`) se encuentren en el directorio `backend/database/seed/` para poder cargarlos o leerlos directamente.
 
-4.  **Ejecutar Aplicacion**: Inicie el servidor en modo desarrollo.
+4.  **Ejecutar Aplicacion**:
 
     ```bash
     npm run start:dev
     ```
 
-5.  **Acceder a la Documentacion**: Una vez en ejecucion, puede acceder a la documentacion interactiva (Swagger) en:
+5.  **Acceder a la Documentacion**: una vez ejecutada la aplicacion, acceder a la documentacion interactiva (Swagger) en:
     ```
     http://localhost:5000/api
     ```

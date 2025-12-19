@@ -10,4 +10,6 @@ export class AppController {
   getHello() {
     // This will redirect to /api (Swagger)
   }
+
+ 
 }

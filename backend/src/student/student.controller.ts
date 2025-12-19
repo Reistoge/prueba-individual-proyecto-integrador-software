@@ -10,7 +10,7 @@ export class StudentController {
   constructor(private readonly studentService: StudentService) { }
 
   @Post()
-  @ApiOperation({ summary: "Lee el archivo .json (como fuente de datos)." }) @ApiBody({ type: CreateStudentDto, isArray: true }) @ApiResponse({ status: 201 })
+  @ApiOperation({ summary: "Ingresa un JSON como body para utilizarlo como fuente de datos." }) @ApiBody({ type: CreateStudentDto, isArray: true }) @ApiResponse({ status: 201 })
   create(@Body() createStudentDto: CreateStudentDto[]) {
     return this.studentService.create(createStudentDto);
   }

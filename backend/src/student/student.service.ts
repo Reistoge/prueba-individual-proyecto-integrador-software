@@ -40,11 +40,20 @@ export class StudentService {
   }
 
   async seedFromFile(filename: string) {
-    const filePath = path.join(seedDir, filename);
-    const raw = await fs.readFile(filePath, 'utf-8');
-    const data: CreateStudentDto[] = JSON.parse(raw);
-    await this.create(data);
-    return { success: true, loaded: data.length, file: filename };
+    try {
+      const filePath = path.join(seedDir, filename);
+      const raw = await fs.readFile(filePath, 'utf-8');
+      const data: CreateStudentDto[] = JSON.parse(raw);
+      
+      if (!Array.isArray(data)) {
+        throw new Error('Invalid file format: expected an array');
+      }
+      
+      await this.create(data);
+      return { success: true, loaded: data.length, file: filename };
+    } catch (error) {
+      throw new Error(`Failed to seed from file: ${error.message}`);
+    }
   }
 
   async getFilenames() {

@@ -15,7 +15,7 @@ export class RetencionService {
   ) { }
 
   private isMatriculado(s: StudentAcademicStatus) {
-    const name = (s.nombre_estado || '').toLowerCase();
+    // const name = (s.nombre_estado || '').toLowerCase();
     return s.cod_estado === 'M';
   }
   

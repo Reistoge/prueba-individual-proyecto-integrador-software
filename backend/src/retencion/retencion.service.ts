@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { StudentService } from 'src/student/student.service';
 import { StudentAcademicStatus } from 'src/student/entities/student-academic-status.schema';
 import { CarreraResponseDto } from './dto/carrera-response.dto';
@@ -11,6 +11,7 @@ export class RetencionService {
   constructor(
     private readonly studentService: StudentService
   ) { }
+  private readonly logger = new Logger(RetencionService.name);
 
   private isMatriculado(s: StudentAcademicStatus) {
     return s.cod_estado === 'M';
@@ -31,6 +32,8 @@ export class RetencionService {
   async obtenerPorCarrera(codPrograma: string, filters?: StudentFilters, filename?: string): Promise<RetencionResponseDto[]> {
     const finalFilters: StudentFilters = { ...filters, cod_programa: codPrograma };
     const status = await this.studentService.findAll(finalFilters, filename);
+    
+
     return this.calcularRetencion(status, codPrograma);
   }
 

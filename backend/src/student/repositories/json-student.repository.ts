@@ -11,6 +11,7 @@ export class JsonStudentRepository {
   // Lógica extraída de StudentService y RetencionService
   async readAndFilter(filename: string, filters?: StudentFilters): Promise<StudentAcademicStatus[]> {
     const data = await this.getDataFromFile(filename);
+    
     return this.filterInMemory(data, filters);
   }
 

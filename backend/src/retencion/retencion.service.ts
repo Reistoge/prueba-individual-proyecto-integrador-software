@@ -17,8 +17,8 @@ export class RetencionService {
     return s.cod_estado === 'M';
   }
 
-  // MODIFICADO: Acepta filename opcional
-  async obtenerCarreras(filename?: string): Promise<CarreraResponseDto[]> {
+   async obtenerCarreras(filename?: string): Promise<CarreraResponseDto[]> {
+    
     // Pasamos 'undefined' en filtros, pero sí pasamos el filename si existe
     const status = await this.studentService.findAll(undefined, filename);
     return this.agruparCarreras(status);

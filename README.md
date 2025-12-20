@@ -6,7 +6,7 @@
 Sistema de backend diseñado para procesar registros con el fin de calcular indicadores de retencion estudiantil por carrera, año de cohorte y plan de estudio.
 ## Descripcion del Sistema
 
-El sistema procesa registros de estados academicos para determinar la permanencia de los estudiantes. Se basa en una arquitectura desacoplada que permite el cambio de fuentes de datos. Actualmente soporta dos modos de operación:
+El sistema procesa registros de estados academicos para determinar la permanencia de los estudiantes (**retencion**). Soporta dos modos de operacion:
 
 1.  **Base de Datos (MongoDB)**: Datos persistidos cargados previamente.
 2.  **Archivo Local (JSON)**: Cálculo al vuelo leyendo directamente un archivo de origen.

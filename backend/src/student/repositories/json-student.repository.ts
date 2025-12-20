@@ -8,15 +8,13 @@ import { StudentFilters } from './student.repository.interface';
 export class JsonStudentRepository {
   private seedDir = path.resolve(process.cwd(), 'src/database/seed');
 
-  // Lógica extraída de StudentService y RetencionService
   async readAndFilter(filename: string, filters?: StudentFilters): Promise<StudentAcademicStatus[]> {
     const data = await this.getDataFromFile(filename);
     
     return this.filterInMemory(data, filters);
   }
 
-  // Extraído de StudentService (funcional)
-  private async getDataFromFile(filename: string): Promise<StudentAcademicStatus[]> {
+   private async getDataFromFile(filename: string): Promise<StudentAcademicStatus[]> {
     try {
       const filePath = path.join(this.seedDir, filename);
       await fs.access(filePath);
@@ -36,7 +34,6 @@ export class JsonStudentRepository {
     return data.filter(s => s.rut === rut);
   }
 
-  // Extraído de RetencionService (funcional)
   private filterInMemory(data: StudentAcademicStatus[], filters?: StudentFilters): StudentAcademicStatus[] {
     if (!filters) return data;
 

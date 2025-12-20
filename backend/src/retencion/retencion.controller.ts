@@ -19,7 +19,7 @@ export class RetencionController {
     @Query('from') from?: number,
     @Query('to') to?: number,
     @Query('catalogo') catalogo?: string,
-    @Query('filename') filename?: string // <--- Nuevo parámetro
+    @Query('filename') filename?: string  
   ) {
     return this.retencionService.obtenerResumen({ from, to, catalogo }, filename);
   }

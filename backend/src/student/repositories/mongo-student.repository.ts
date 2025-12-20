@@ -18,7 +18,7 @@ export class MongoStudentRepository implements IStudentRepository {
     return this.model.find({ rut }).lean<StudentAcademicStatus[]>();
   }
 
-  // Lógica extraída de RetencionService (versión funcional)
+  
   private buildQuery(filters?: StudentFilters) {
     const query: any = {};
 

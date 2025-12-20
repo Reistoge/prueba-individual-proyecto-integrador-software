@@ -1,7 +1,9 @@
+
+**Nombre**: Ferran Rojas Andreu
+**Fecha**: 19/12/2025
+**Asignatura**: Proyecto integrador de software
 # Proyecto de Calculo y Visualizacion de Retencion Estudiantil - UCN
-
-Este proyecto consiste en un sistema de backend diseñado para procesar registros historicos de la Universidad Catolica del Norte (UCN) con el fin de calcular indicadores de retencion estudiantil por carrera, año de cohorte y plan de estudio.
-
+Sistema de backend diseñado para procesar registros con el fin de calcular indicadores de retencion estudiantil por carrera, año de cohorte y plan de estudio.
 ## Descripcion del Sistema
 
 El sistema procesa registros de estados academicos para determinar la permanencia de los estudiantes. Se basa en una arquitectura desacoplada que permite el cambio de fuentes de datos. Actualmente soporta dos modos de operación:
@@ -18,7 +20,7 @@ De acuerdo a los requerimientos especificados por el profesor, la Retencion Año
 3.  **Indicadores**:
     - **Matriculados primera vez**: Total de estudiantes que cumplen el punto 1.
     - **Retenidos año siguiente**: Estudiantes del grupo anterior que cumplen el punto 2.
-    - **Tasa de retencion**: Porcentaje resultante de (Retenidos / Matriculados).
+    - **Tasa de retencion**: Porcentaje resultante de (**Retenidos** / **Matriculados**).
 
 ## Arquitectura
 
@@ -27,6 +29,8 @@ El backend esta construido siguiendo principios de separacion de capas para gara
 - **Capa de Acceso a Datos (Repository)**: Encargada de la persistencia (MongoDB) o lectura de archivos.
 - **Capa de Negocio (Service)**: Contiene la logica pura de calculo de cohortes y validacion de estados de retencion, independiente de la fuente de datos.
 - **Capa de API (Controller)**: Expone los endpoints REST y gestiona los filtros y parámetros de consulta.
+
+
 
 ## Requisitos Previos
 

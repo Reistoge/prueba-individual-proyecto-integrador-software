@@ -1,11 +1,16 @@
 import { Module } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { StudentController } from './student.controller';
-import { DatabaseModule } from 'src/database/database.module';
+import { MongoStudentRepository } from './repositories/mongo-student.repository';
+import { JsonStudentRepository } from './repositories/json-student.repository';
 
 @Module({
- 
   controllers: [StudentController],
-  providers: [StudentService],
+  providers: [
+    StudentService,
+    MongoStudentRepository,  
+    JsonStudentRepository    
+  ],
+  exports: [StudentService] 
 })
-export class StudentModule {}
+export class StudentModule { }

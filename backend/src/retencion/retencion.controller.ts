@@ -25,10 +25,13 @@ export class RetencionController {
   }
 
   @Get('carreras')
-  @ApiOperation({ summary: "Listado de carreras disponibles" })
+  @ApiOperation({ summary: "Listado de carreras disponibles. Soporta lectura desde archivo." })
   @ApiResponse({ type: CarreraResponseDto, isArray: true })
-  getCarreras() {
-    return this.retencionService.obtenerCarreras();
+  @ApiQuery({ name: 'filename', required: false, type: String })
+  getCarreras(
+    @Query('filename') filename?: string
+  ) {
+    return this.retencionService.obtenerCarreras(filename);
   }
 
   @Get('por-carrera')
@@ -43,7 +46,7 @@ export class RetencionController {
     @Query('from') from?: number,
     @Query('to') to?: number,
     @Query('catalogo') catalogo?: string,
-    @Query('filename') filename?: string // <--- Nuevo parámetro
+    @Query('filename') filename?: string
   ) {
     return this.retencionService.obtenerPorCarrera(codPrograma, { from, to, catalogo }, filename);
   }

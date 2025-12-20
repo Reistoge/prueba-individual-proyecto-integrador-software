@@ -37,9 +37,14 @@ export class StudentService {
     if (!Array.isArray(createStudentDto) || createStudentDto.length === 0) return;
     await this.model.insertMany(createStudentDto, { ordered: false });
   }
-
-  async findOne(rut: string): Promise<StudentAcademicStatus[]> {
-    return await this.model.find({ rut: rut }).lean<StudentAcademicStatus[]>();
+  async findOne(rut: string, filename?: string): Promise<StudentAcademicStatus[]> {
+    if (filename) {
+      // Estrategia Archivo JSON
+      return this.jsonRepo.findByRut(filename, rut);
+    } else {
+      // Estrategia Base de Datos Mongo
+      return this.mongoRepo.findByRut(rut);
+    }
   }
 
   async remove(rut: string) {
@@ -55,9 +60,9 @@ export class StudentService {
       const filePath = path.join(this.seedDir, filename);
       const raw = await fs.readFile(filePath, 'utf-8');
       const data: CreateStudentDto[] = JSON.parse(raw);
-      
+
       if (!Array.isArray(data)) throw new Error('Invalid file format');
-      
+
       await this.create(data);
       return { success: true, loaded: data.length, file: filename };
     } catch (error) {

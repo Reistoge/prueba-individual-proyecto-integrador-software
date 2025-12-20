@@ -23,11 +23,16 @@ export class JsonStudentRepository {
       const data = JSON.parse(raw);
 
       if (!Array.isArray(data)) throw new Error('El formato del archivo debe ser un array JSON');
-      
+
       return data as StudentAcademicStatus[];
     } catch (error) {
       throw new NotFoundException(`Error al leer el archivo: ${error.message}`);
     }
+  }
+  async findByRut(filename: string, rut: string): Promise<StudentAcademicStatus[]> {
+    const data = await this.getDataFromFile(filename);
+    // Filtramos manualmente por RUT
+    return data.filter(s => s.rut === rut);
   }
 
   // Extraído de RetencionService (funcional)

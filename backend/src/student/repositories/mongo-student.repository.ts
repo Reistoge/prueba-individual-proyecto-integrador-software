@@ -8,11 +8,14 @@ import { IStudentRepository, StudentFilters } from './student.repository.interfa
 export class MongoStudentRepository implements IStudentRepository {
   constructor(
     @InjectModel(StudentAcademicStatus.name) private readonly model: Model<StudentAcademicStatusDocument>
-  ) {}
+  ) { }
 
   async findAll(filters?: StudentFilters): Promise<StudentAcademicStatus[]> {
     const query = this.buildQuery(filters);
     return await this.model.find(query).lean<StudentAcademicStatus[]>();
+  }
+  async findByRut(rut: string): Promise<StudentAcademicStatus[]> {
+    return this.model.find({ rut }).lean<StudentAcademicStatus[]>();
   }
 
   // Lógica extraída de RetencionService (versión funcional)

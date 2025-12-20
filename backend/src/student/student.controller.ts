@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
-import { ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { StudentAcademicStatus } from './entities/student-academic-status.schema';
 
 @Controller('student')
@@ -24,9 +24,15 @@ export class StudentController {
   async getFilenames() {
     return await this.studentService.getFilenames();
   }
+
   @Get(':rut')
-  async find(@Param('rut') rut: string): Promise<StudentAcademicStatus[]> {
-    return await this.studentService.findOne(rut);
+  @ApiOperation({ summary: "Busca registros de un estudiante por RUT. Si se indica 'filename', busca en ese archivo." })
+  @ApiQuery({ name: 'filename', required: false, description: 'Nombre del archivo (ej: output.json)' })
+  async find(
+    @Param('rut') rut: string,
+    @Query('filename') filename?: string // <--- Nuevo parámetro opcional
+  ): Promise<StudentAcademicStatus[]> {
+    return await this.studentService.findOne(rut, filename);
   }
   @Get() @ApiOperation({ summary: "Obtiene todos los registros." })
   async findAll(): Promise<StudentAcademicStatus[]> {

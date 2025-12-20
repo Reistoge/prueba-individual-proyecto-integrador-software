@@ -5,8 +5,6 @@ import { CarreraResponseDto } from './dto/carrera-response.dto';
 import { RetencionResponseDto } from './dto/retencion-response.dto';
 import { StudentFilters } from 'src/student/repositories/student.repository.interface';
 
-// Nota: Podemos usar StudentFilters en lugar de definir RetentionFilters localmente
-
 @Injectable()
 export class RetencionService {
 
@@ -18,29 +16,25 @@ export class RetencionService {
     return s.cod_estado === 'M';
   }
 
-  async obtenerCarreras(): Promise<CarreraResponseDto[]> {
-    // Obtenemos todo (sin filtros, por defecto de BD)
-    const status = await this.studentService.findAll();
+  // MODIFICADO: Acepta filename opcional
+  async obtenerCarreras(filename?: string): Promise<CarreraResponseDto[]> {
+    // Pasamos 'undefined' en filtros, pero sí pasamos el filename si existe
+    const status = await this.studentService.findAll(undefined, filename);
     return this.agruparCarreras(status);
   }
 
   async obtenerResumen(filters?: StudentFilters, filename?: string): Promise<RetencionResponseDto[]> {
-    // Delegamos la obtención de datos al orquestador
     const status = await this.studentService.findAll(filters, filename);
     return this.calcularRetencion(status);
   }
 
   async obtenerPorCarrera(codPrograma: string, filters?: StudentFilters, filename?: string): Promise<RetencionResponseDto[]> {
-    // Combinamos el cod_programa con los filtros existentes
     const finalFilters: StudentFilters = { ...filters, cod_programa: codPrograma };
-
-    // Delegamos la obtención de datos al orquestador
     const status = await this.studentService.findAll(finalFilters, filename);
-
     return this.calcularRetencion(status, codPrograma);
   }
 
-  // --- Lógica Pura de Negocio (Cálculos) ---
+  // --- Helpers de Negocio ---
 
   private agruparCarreras(status: StudentAcademicStatus[]): CarreraResponseDto[] {
     const carrerasMap = new Map<string, { count: number, nombre: string }>();
@@ -54,7 +48,7 @@ export class RetencionService {
       } else {
         carrerasMap.set(cod, {
           count: 1,
-          nombre: s.nombre_estandar || ''
+          nombre: s.nombre_estandar || '' 
         });
       }
     }
@@ -65,13 +59,12 @@ export class RetencionService {
       count: value.count
     }));
   }
+
   private calcularRetencion(status: StudentAcademicStatus[], forceCodPrograma?: string): RetencionResponseDto[] {
     const secondYearSet = new Set<string>();
 
-    // 1. Indexar matriculados
     for (const s of status) {
       if (this.isMatriculado(s)) {
-        // Aseguramos que el año sea parte de la clave tal cual viene
         secondYearSet.add(`${s.rut}|${s.cod_programa}|${s.catalogo}|${s.year_estado}`);
       }
     }
@@ -80,14 +73,11 @@ export class RetencionService {
 
     for (const s of status) {
       if (!this.isMatriculado(s)) continue;
-      // Usamos '==' para permitir comparación entre string "2011" y number 2011 por si acaso, 
-      // o convertimos ambos. Lo ideal es asegurar conversión.
-      if (s.year_estado != s.year_admision) continue;
+      // Convertimos a String explícitamente para evitar errores de comparación
+      if (String(s.year_estado) !== String(s.year_admision)) continue;
 
-      // CORRECCIÓN AQUÍ: Forzamos la conversión a Número con Number() o el símbolo +
+      // Importante: Convertir a número para sumar 1 correctamente
       const Y = Number(s.year_admision);
-
-      // Ahora Y + 1 será 2012 (matemático) en vez de "20111" (texto)
       const k2 = `${s.rut}|${s.cod_programa}|${s.catalogo}|${Y + 1}`;
 
       const entry = byYear.get(Y) || { m1: 0, r1: 0, carrera: s.cod_programa };
@@ -96,7 +86,7 @@ export class RetencionService {
       if (secondYearSet.has(k2)) {
         entry.r1 += 1;
       }
-
+      
       if (!forceCodPrograma) entry.carrera = 'global';
 
       byYear.set(Y, entry);
@@ -111,5 +101,3 @@ export class RetencionService {
     })).sort((a, b) => a.anio_cohorte - b.anio_cohorte);
   }
 }
-
-   

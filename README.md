@@ -53,15 +53,15 @@ El backend esta construido siguiendo principios de separacion de capas para gara
     npm install
     ```
 
-3.  **IMPORTANTE:** Para la configuracion de Datos (Seeding) los archivos de datos (ej. `output.json`) se encuentren en el directorio `backend/database/seed/` para poder cargarlos o leerlos directamente.
+3.  **IMPORTANTE:** Para la configuracion de datos los archivos (ej. `output.json`) se deben colocar en el directorio `backend/database/seed/` para poder cargarlos o leerlos directamente.
 
-4.  **Ejecutar Aplicacion**:
+5.  **Ejecutar Aplicacion**:
 
     ```bash
     npm run start:dev
     ```
 
-5.  **Acceder a la Documentacion**: una vez ejecutada la aplicacion, acceder a la documentacion interactiva (Swagger) en:
+6.  **Acceder a la Documentacion**: una vez ejecutada la aplicacion, acceder a la documentacion interactiva (Swagger) en:
     ```
     http://localhost:5000/api
     ```
